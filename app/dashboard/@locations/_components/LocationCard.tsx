@@ -1,8 +1,6 @@
-import { API_URL, TOKEN_NAME } from "@/constants";
+import { API_URL } from "@/constants";
 import { Location } from "@/entities";
 import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
-import axios from "axios";
-import { cookies } from "next/headers";
 import Link from "next/link";
 import { authHeaders } from '@/helpers/authHeaders';
 
@@ -12,11 +10,16 @@ export default async function LocationCard({
   store: string | string[] | undefined;
 }) {
   if (!store) return null;
-  const { data } = await axios.get<Location>(`${API_URL}/locations/${store}`, {
+  const response = await fetch(`${API_URL}/locations/${store}`, {
+    method: "GET",
     headers: {
       ...authHeaders(),
     },
+    next: {
+      tags: ["dashboard:locations", `dashboard:locations:${store}`],
+    },
   });
+  const data: Location = await response.json();
   return (
     <Card>
       <CardHeader>

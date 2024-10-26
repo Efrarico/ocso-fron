@@ -6,7 +6,7 @@ import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 
-export async function createLocation(fromData: FormData){    
+export async function updateLocation(store: string, fromData: FormData){    
     let location: any = {};
     let locationLatLng = [0,0] 
     for (const key of fromData.keys()){
@@ -22,8 +22,8 @@ export async function createLocation(fromData: FormData){
         }
     }
     location.locationLatLng = locationLatLng;
-    const response = await fetch(`${API_URL}/locations`,{
-        method: "POST",
+    const response = await fetch(`${API_URL}/locations/${store}`,{
+        method: "PATCH",
         body: JSON.stringify(location),
         headers: {
             "Content-Type": "application/json",
@@ -31,8 +31,9 @@ export async function createLocation(fromData: FormData){
         }
     })
     const {locationId} : Location = await response.json();
-    if (response.status === 201) {
+    if (response.status === 200) {
         revalidateTag("dashboard:locations");
+        revalidateTag(`dashboard:locations:${store}`);
         redirect(`/dashboard?store=${locationId}`);
     }
 }
