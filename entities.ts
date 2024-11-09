@@ -14,7 +14,7 @@ export interface Employee{
     employeeLastName: string;
     employeePhoneNumber: string;
     employeeEmail: string;
-    employeePhoto: string;
+    employeePhoto?: string;
     location?: Location;
     user?: any;
 }
