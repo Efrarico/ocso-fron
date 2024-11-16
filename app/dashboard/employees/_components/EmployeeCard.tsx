@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function EmployeeCard({ employee }: { employee: Employee }) {
   return (
-    <Card className="size-72 max-h-72">
+    <Card className="size-72 max-h-72 min-h-72 bg-orange-50">
       <CardHeader>
         <h1 className="font-bold text-xl">
           {" "}
